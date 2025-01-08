@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <id>doc1</id>
+    <title>Sample Document</title>
+    <section>
+        <name>Introduction</name>
+        <content>This is the introduction section of the document.</content>
+    </section>
+    <section>
+        <name>Chapter 1</name>
+        <content>This is the content of chapter 1.</content>
+    </section>
+    <section>
+        <name>Conclusion</name>
+        <content>This is the conclusion of the document.</content>
+    </section>
+</document>
