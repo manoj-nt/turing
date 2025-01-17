@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestProcessDataWithCallback(t *testing.T) {
+func TestProcessDataWithCallback1(t *testing.T) {
 	mockCallback := new(mocks.Callback)
 
 	// Set up expectations with Run() method
