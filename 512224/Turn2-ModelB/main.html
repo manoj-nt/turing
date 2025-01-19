@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Playback Controls</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <video id="myVideo" controls>
+        <source src="https://www.youtube.com/watch?v=P6BhKDR1RTo&themeRefresh=1" type="video/mp4">
+    </video>
+
+    <button id="playBtn">Play</button>
+    <button id="pauseBtn">Pause</button>
+    <button id="fastForwardBtn">Fast Forward</button>
+    <button id="rewindBtn">Rewind</button>
+
+    <script>
+        $(document).ready(function() {
+            var video = document.getElementById("myVideo");
+
+            $("#playBtn").click(function() {
+                sendPlaybackControl("play");
+            });
+
+            $("#pauseBtn").click(function() {
+                sendPlaybackControl("pause");
+            });
+
+            $("#fastForwardBtn").click(function() {
+                sendPlaybackControl("fastforward");
+            });
+
+            $("#rewindBtn").click(function() {
+                sendPlaybackControl("rewind");
+            });
+
+            function sendPlaybackControl(action) {
+                $.ajax({
+                    url: "http:localhost:8080/playback?action=" + action,
+                    type: "GET",
+                    success: function(response) {
+                        console.log(response);
+                        // Handle the response from the server (if needed)
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error sending playback control:", textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
