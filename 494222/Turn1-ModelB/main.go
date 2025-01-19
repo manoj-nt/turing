@@ -1,30 +1,33 @@
 package main
 
 import (
-	"io/ioutil"
-	"log"
+	"fmt"
 	"net/http"
 )
 
-const (
-	filePath = "tmp/data.txt" // Replace with your desired file path
-)
+func videoHandler(w http.ResponseWriter, r *http.Request) {
+	queries := r.URL.Query()
 
-func readFileHandler(w http.ResponseWriter, r *http.Request) {
-	// Read data from the file
-	data, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		log.Printf("Error reading file: %v", err)
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
+	playbackSpeed := queries.Get("speed")
+	resolution := queries.Get("resolution")
+	tutorial := queries.Get("tutorial")
+
+	// Default settings if parameters are not provided.
+	if playbackSpeed == "" {
+		playbackSpeed = "1.0"
+	}
+	if resolution == "" {
+		resolution = "1080p"
+	}
+	if tutorial == "" {
+		tutorial = "basic"
 	}
 
-	// Write the data to the response body
-	w.Write(data)
+	// Use these parameters to modify video playback or load tutorials.
+	fmt.Fprintf(w, "Playback Speed: %s\nResolution: %s\nTutorial: %s\n", playbackSpeed, resolution, tutorial)
 }
 
 func main() {
-	http.HandleFunc("/read", readFileHandler)
-	log.Println("Starting file reader service...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.HandleFunc("/video", videoHandler)
+	http.ListenAndServe(":8080", nil)
 }

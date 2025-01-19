@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Video Player</title>
+    </head>
+    <body>
+        <video id="videoPlayer" width="640" height="360" controls>
+            <source src="video.mp4" type="video/mp4">
+        </video>
+        <button onclick="sendControl('play')">Play</button>
+        <button onclick="sendControl('pause')">Pause</button>
+        <button onclick="sendControl('forward', 10)">Fast Forward 10s</button>
+        <button onclick="sendControl('rewind', 5)">Rewind 5s</button>
+
+        <script>
+            function sendControl(action, seekTime = 0) {
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        console.log(this.responseText); // Echo server response for debugging
+                    }
+                };
+                xhttp.open("GET", `http://localhost:8080/video?action=${action}&seek=${seekTime}`, true);
+                xhttp.send();
+
+                // Optionally combine with real-time video adjustments
+                let video = document.getElementById('videoPlayer');
+                switch(action) {
+                    case 'play': video.play(); break;
+                    case 'pause': video.pause(); break;
+                    case 'forward': video.currentTime += parseInt(seekTime); break;
+                    case 'rewind': video.currentTime -= parseInt(seekTime); break;
+                }
+            }
+        </script>
+    </body>
+</html>
