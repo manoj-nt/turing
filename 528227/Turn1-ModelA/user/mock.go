@@ -2,12 +2,12 @@ package user
 
 // MockUserService is a mock implementation for testing
 type MockUserService struct {
-	mockData map[int]*User
+	MockData map[int]*User
 }
 
 // GetUser returns a mocked user based on predefined data
 func (m *MockUserService) GetUser(userID int) (*User, error) {
-	user, exists := m.mockData[userID]
+	user, exists := m.MockData[userID]
 	if !exists {
 		return nil, nil
 	}

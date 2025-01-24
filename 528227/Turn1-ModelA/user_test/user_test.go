@@ -23,7 +23,7 @@ func TestGetUserWithMockService(t *testing.T) {
 	mockData := map[int]*user.User{
 		2: {ID: 2, Name: "Jane Doe"},
 	}
-	mockService := &user.MockUserService{mockData: mockData}
+	mockService := &user.MockUserService{MockData: mockData}
 	u, err := mockService.GetUser(2)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
