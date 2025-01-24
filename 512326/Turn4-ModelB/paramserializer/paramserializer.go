@@ -1,6 +1,7 @@
 package paramserializer
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"net/url"
 	"strconv"
@@ -11,6 +12,34 @@ import (
 type Coordinates struct {
 	Lat float64
 	Lng float64
+}
+
+// Implement the Valuer interface for GORM compatibility.
+func (c Coordinates) Value() (driver.Value, error) {
+	return fmt.Sprintf("%f,%f", c.Lat, c.Lng), nil
+}
+
+// Implement the Scanner interface for GORM compatibility.
+func (c *Coordinates) Scan(value interface{}) error {
+	str, ok := value.(string)
+	if !ok {
+		return fmt.Errorf("failed to scan Coordinates: %v", value)
+	}
+	parts := strings.Split(str, ",")
+	if len(parts) != 2 {
+		return fmt.Errorf("invalid Coordinates format: %s", str)
+	}
+	lat, err := strconv.ParseFloat(parts[0], 64)
+	if err != nil {
+		return fmt.Errorf("invalid latitude: %v", err)
+	}
+	lng, err := strconv.ParseFloat(parts[1], 64)
+	if err != nil {
+		return fmt.Errorf("invalid longitude: %v", err)
+	}
+	c.Lat = lat
+	c.Lng = lng
+	return nil
 }
 
 // Address represents a user's address with nested coordinates.
@@ -54,7 +83,7 @@ func SerializeQueryParams(rawQuery string) (*User, error) {
 	}
 
 	user := User{}
-	user.initDefaults() // Initialize default values for optional fields
+	user.initDefaults()
 
 	for key, values := range params {
 		if strings.HasSuffix(key, "[]") { // Handle slices like `tags[]`
@@ -73,8 +102,9 @@ func SerializeQueryParams(rawQuery string) (*User, error) {
 					user.Metadata = make(map[string]string)
 				}
 				user.Metadata[subfield] = values[0]
+			}
 
-			} else if len(parts) > 2 { // Handle deeper nesting like `address[coordinates][lat]`
+			if len(parts) > 2 { // Handle deeper nesting
 				subSubfield := strings.TrimRight(parts[2], "]")
 				if field == "address" && subfield == "coordinates" {
 					switch subSubfield {
@@ -92,7 +122,7 @@ func SerializeQueryParams(rawQuery string) (*User, error) {
 						}
 					}
 				}
-			} else if field == "address" {
+			} else if field == "address" { // Handle fields like `address[city]`
 				switch subfield {
 				case "city":
 					user.Address.City = values[0]
@@ -123,30 +153,25 @@ func SerializeQueryParams(rawQuery string) (*User, error) {
 	return &user, nil
 }
 
-// ValidateUser validates the User struct, ensuring maps and slices are populated correctly, and sets defaults.
+// ValidateUser validates the User struct, including slice and nested fields.
 func ValidateUser(user *User) error {
-	if strings.TrimSpace(user.Name) == "" {
+	if user.Name == "" {
 		return fmt.Errorf("name cannot be empty")
 	}
 	if user.Age <= 0 {
 		return fmt.Errorf("age must be greater than zero")
 	}
-
 	for i, tag := range user.Tags {
-		user.Tags[i] = strings.TrimSpace(tag)
-		if user.Tags[i] == "" {
+		if strings.TrimSpace(tag) == "" {
 			return fmt.Errorf("tag at index %d is empty", i)
 		}
+		user.Tags[i] = strings.TrimSpace(tag)
 	}
-
-	if strings.TrimSpace(user.Address.City) == "" {
+	if user.Address.City == "" {
 		return fmt.Errorf("address city cannot be empty")
 	}
-	if strings.TrimSpace(user.Address.State) == "" {
+	if user.Address.State == "" {
 		return fmt.Errorf("address state cannot be empty")
 	}
-
-	// Optionally validate Metadata keys/values if there are specific requirements
-
 	return nil
 }
