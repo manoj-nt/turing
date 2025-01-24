@@ -1,0 +1,8 @@
+# Logging Settings
+log_level=debug
+log_file=/var/log/app.log
+log_max_size=10MB
+
+# Cache Settings
+cache_size=512MB
+cache_expiry=24h
