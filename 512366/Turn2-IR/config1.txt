@@ -1,0 +1,8 @@
+# Application Settings
+app_name=MyApplication
+version=1.0.0
+host=localhost
+
+# Database Settings
+db_host=localhost
+db_port=3306
