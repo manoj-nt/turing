@@ -1,0 +1,13 @@
+# Configuration file for app settings
+# Do not modify the values below
+
+app_name=MyApp
+version=1.0.0
+host=localhost
+port=8080
+
+someKey=someKeyData1
+
+# Logging configuration
+log_level=debug
+log_file=/var/log/myapp.log
