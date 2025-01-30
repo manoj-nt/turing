@@ -1,0 +1,9 @@
+{
+    "username": "johndoe",
+    "theme": "dark",
+    "notifications_enabled": true,
+    "preferences": {
+        "language": "en",
+        "timezone": "UTC"
+    }
+}
