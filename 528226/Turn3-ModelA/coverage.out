@@ -1,0 +1,6 @@
+mode: atomic
+modela/cmap/cmap.go:18.40,22.2 1 2
+modela/cmap/cmap.go:25.52,29.2 3 2
+modela/cmap/cmap.go:32.54,36.13 4 3
+modela/cmap/cmap.go:36.13,38.3 1 1
+modela/cmap/cmap.go:39.2,39.19 1 2
