@@ -1,0 +1,16 @@
+mode: atomic
+modelb/counter/counter.go:14.28,18.2 1 1
+modelb/counter/counter.go:20.47,24.15 3 102
+modelb/counter/counter.go:24.15,26.3 1 1
+modelb/counter/counter.go:28.2,29.12 2 101
+modelb/counter/counter.go:32.47,36.15 3 3
+modelb/counter/counter.go:36.15,38.3 1 1
+modelb/counter/counter.go:40.2,40.44 1 2
+modelb/counter/counter.go:40.44,42.3 1 1
+modelb/counter/counter.go:42.8,44.3 1 1
+modelb/counter/counter.go:45.2,45.12 1 1
+modelb/counter/counter.go:48.53,52.15 3 2
+modelb/counter/counter.go:52.15,54.3 1 0
+modelb/counter/counter.go:56.2,57.9 2 2
+modelb/counter/counter.go:57.9,59.3 1 0
+modelb/counter/counter.go:60.2,60.17 1 2
