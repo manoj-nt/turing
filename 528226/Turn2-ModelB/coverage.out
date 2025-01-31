@@ -1,0 +1,4 @@
+mode: atomic
+modelb/main.go:11.22,13.25 2 2
+modelb/main.go:13.25,16.3 2 10
+modelb/main.go:19.13,24.2 4 0
